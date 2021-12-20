@@ -31,7 +31,7 @@ def search_word(request):
         word = request.POST["search_word"]
         try:
             data = subprocess.check_output(["grep", word, WORD_FILE,"-C10"]).decode()
-            data = modify_file2html(data)
+            data = modify_file2html(data).replace(word, f"<font color='orangered'>{word}</font>")
         except:
             data = "No result"
     return render(request, "search.html", {"words":data, "search_word": word})
