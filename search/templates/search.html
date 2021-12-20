@@ -1,7 +1,8 @@
+
 {% extends "layout.html" %}
 
 {% block body %}
-<h2> All word page </h2>
+<h2> Search result page </h2>
 <form action="{% url 'search:search_word' %}" method="post">
     {% csrf_token %}
     <input type="text" name="search_word" >
