@@ -19,6 +19,7 @@ services:
       - '8001'
     volumes:
       - .:/code
+      - ../medical_words:/medical_words
     command: "uwsgi --socket :8001 --module simple_search.wsgi:application"
     depends_on:
       - db
@@ -41,7 +42,7 @@ services:
 
   celery:
     build: .
-    command: celery -A iHuzoku worker -l info
+    command: celery -A simple_search worker -l info
     volumes:
       - .:/code
     environment:
@@ -55,7 +56,7 @@ services:
 
   celery-beat:
     build: .
-    command: celery -A iHuzoku beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler --pidfile=
+    command: celery -A simple_search beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler --pidfile=
     volumes:
       - .:/code
     environment:
