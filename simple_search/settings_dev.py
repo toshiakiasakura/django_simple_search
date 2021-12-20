@@ -1,48 +1,38 @@
 from .settings_common import *
-import os
 
-
-DEBUG = False
-ALLOWED_HOSTS = ["*"]
-
-STATIC_ROOT = os.path.join(BASE_DIR,"static")
-MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+DEBUG = True
 
 # settings of logging
 LOGGING = {
     "version": 1,
     "disable_exisiting_logger": False,
-
+    
     # Logger 
     "loggers": {
         # Logger for django
         "django" : {
-            "handlers":["file"],
+            "handlers":["console"],
             "level": "INFO",
         },
         # Logger for coupon application
         "coupon":{
-            "handlers":["file"],
-            "level": "INFO",
+            "handlers":["console"],
+            "level": "DEBUG",
         }
     },
 
     # Settings of handlers
     "handlers" : {
-       "file": {
-            "level" : "INFO",
-            "class" : "logging.handlers.TimedRotatingFileHandler",
-            "filename" : os.path.join(BASE_DIR, "logs/django.log",),
-            "formatter": "prod",
-            "when": "D",
-            "interval": 1,
-            "backupCount":7,
+        "console": {
+            "level" : "DEBUG",
+            "class" : "logging.StreamHandler",
+            "formatter": "dev"
         },
     },
 
     # Settings of formatter
     "formatters": {
-        "prod" : {
+        "dev" : {
             "format" : "\t".join([
                 "%(asctime)s",
                 "[%(levelname)s]",
@@ -52,3 +42,11 @@ LOGGING = {
         },
     }
 }
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,"static"),
+    os.path.join(BASE_DIR,"media"),
+)

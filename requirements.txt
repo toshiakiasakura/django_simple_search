@@ -1,0 +1,13 @@
+Django>=3.0,<4.0
+psycopg2-binary>=2.8
+markdown==3.1.1
+uwsgi==2.0.20
+django-filter==21.1
+django-tables2==2.4.1
+django-bootstrap3==15.0.0
+
+celery==4.3.0
+redis==3.3.0
+django_celery_beat==1.5.0    
+django-celery-results==1.1.2 
+

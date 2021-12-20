@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2> Welcome </h2>
+<h3> <a href="{% url 'search:word' %}">Search page</a> </h3>
+<ul>
+    <li>Username: </li>
+    <li>Email:</li>
+</ul>
+
+{% endblock %}

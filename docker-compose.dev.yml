@@ -1,0 +1,58 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - ../medical_words:/medical_words
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=simple_search.settings_dev
+      - DOCKER_BUILDKIT=1
+
+  # For celey settings
+  redis:
+    image: "redis:alpine"
+
+  celery:
+    build: .
+    command: celery -A simple_search worker -l info
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - django
+      - db
+      - redis
+
+  celery-beat:
+    build: .
+    command: celery -A iHuzoku beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler --pidfile=
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - django
+      - db
+      - redis
+
