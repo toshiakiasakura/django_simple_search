@@ -26,11 +26,15 @@ class AllWordView(generic.TemplateView):
 
 def search_word(request):
     data = "No search"
+    word = "Missing"
     if request.method == "POST":
         word = request.POST["search_word"]
-        data = subprocess.check_output(["grep", word, WORD_FILE,"-C10"]).decode()
-        data = modify_file2html(data)
-    return render(request, "search.html", {"words":data})
+        try:
+            data = subprocess.check_output(["grep", word, WORD_FILE,"-C10"]).decode()
+            data = modify_file2html(data)
+        except:
+            data = "No result"
+    return render(request, "search.html", {"words":data, "search_word": word})
 
 def modify_file2html(s:str):
     return s.replace("\n", "<br>").replace(" ", "&nbsp;")
