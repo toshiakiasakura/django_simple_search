@@ -9,6 +9,22 @@
 </head>
 <body>
     <main class="container">
+        {% if messages %}
+        <div class="container">
+            <div class="row">
+                <div class="my-div-style w-100">
+                    <ul class="messages" style="list-style: none;">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %} >
+                            {{ message }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
             <div class="col-md-8 px-0">
               <h1 class="display-4 fst-italic">国試用まとめ</h1>
@@ -21,6 +37,7 @@
             <input type="text" name="search_word" >
             <input type="submit" value="SEARCH">
         </form>
+        <h3> <a href="{% url 'search:update_file' %}">Update a file</a> </h3>
         <hr>
         {% block body %}
         {% endblock %}
